@@ -23,22 +23,20 @@
           const Val_max = 130;
           const Val_min = -40;
           const sections = 12;
-
-          let stepSize = 10;
-          let columnSize = 50;
-          let rowSize = 50;
-          let margin = 10;
-          let xAxis = [" ", "Jan", "Feb", "Mar", "Apr",
+          const stepSize = 10;
+          const columnSize = 50;
+          const rowSize = 50;
+          const margin = 10;
+          const xAxis = [" ", "Jan", "Feb", "Mar", "Apr",
             "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-
 
           const yScale = (canvas.height - columnSize - margin) / (Val_max - Val_min);
           const xScale = (canvas.width - rowSize) / sections;
 
 
-          init();
+          init(ctx);
 
-          function init() {
+          function init(ctx) {
             ctx.fillStyle = "#0099ff"
             ctx.font = "20 pt Verdana"
             ctx.strokeStyle = "#009933"; // color of grid lines
@@ -65,25 +63,20 @@
             ctx.scale(1, -1 * yScale);
 
             // Color of each dataplot items
-
-            ctx.strokeStyle = "#FF0066";
-            plotData(Apple);
-            ctx.strokeStyle = "#9933FF";
-            plotData(Samsung);
-            ctx.strokeStyle = "#000";
-            plotData(Nokia);
+            plotData(ctx, "#FF0066", Apple)
+            plotData(ctx, "#9933FF", Samsung);
+            plotData(ctx, "#000", Nokia);
           }
 
-          function plotData(dataSet) {
+          function plotData(ctx, strokeStyle, xs) {
+            ctx.strokeStyle = strokeStyle
             ctx.beginPath();
-            ctx.moveTo(0, dataSet[0]);
+            ctx.moveTo(0, xs[0]);
             for (let i = 1; i < sections; i++) {
-              ctx.lineTo(i * xScale, dataSet[i]);
+              ctx.lineTo(i * xScale, xs[i]);
             }
             ctx.stroke();
           }
-
-
         }}
       />
     );
