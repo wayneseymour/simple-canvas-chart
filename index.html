@@ -6,6 +6,11 @@
 <script type="text/babel">
   const Component = React.Component;
 
+  // Values for the Data Plot, they can also be obtained from a external file
+  let Apple = [100, 102, 87, , 100, 123, 100, 90, 87, 91, 93, 88];
+  let Samsung = [30, 50, 70, 80, 90, 100, 95, 91, 85, 92, 99, 130];
+  let Nokia = [20, -10, -20, -25, -40, 5, 10, 28, 30, 43, 65, 80];
+
   const App = () => {
     return (
       <Canvas
@@ -14,37 +19,28 @@
         draw={(canvas, ctx) => {
           ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
+          // set these values for your data
           const Val_max = 130;
           const Val_min = -40;
           const sections = 12;
 
-          let xScale;
-          let yScale;
-          // Values for the Data Plot, they can also be obtained from a external file
-          let Apple = [100, 102, 87, , 100, 123, 100, 90, 87, 91, 93, 88];
-          let Samsung = [30, 50, 70, 80, 90, 100, 95, 91, 85, 92, 99, 130];
-          let Nokia = [20, -10, -20, -25, -40, 5, 10, 28, 30, 43, 65, 80];
+          let stepSize = 10;
+          let columnSize = 50;
+          let rowSize = 50;
+          let margin = 10;
+          let xAxis = [" ", "Jan", "Feb", "Mar", "Apr",
+            "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+
+          const yScale = (canvas.height - columnSize - margin) / (Val_max - Val_min);
+          const xScale = (canvas.width - rowSize) / sections;
+
 
           init();
 
           function init() {
-            // set these values for your data
-
-
-            let stepSize = 10;
-            let columnSize = 50;
-            let rowSize = 50;
-            let margin = 10;
-            let xAxis = [" ", "Jan", "Feb", "Mar", "Apr",
-              "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-
-
             ctx.fillStyle = "#0099ff"
             ctx.font = "20 pt Verdana"
-
-            yScale = (canvas.height - columnSize - margin) / (Val_max - Val_min);
-            xScale = (canvas.width - rowSize) / sections;
-
             ctx.strokeStyle = "#009933"; // color of grid lines
             ctx.beginPath();
             // print Parameters on X axis, and grid lines on the graph
