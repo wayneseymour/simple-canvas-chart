@@ -4,39 +4,115 @@
 <script src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.development.js"></script>
 <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
 <script type="text/babel">
-    const Component = React.Component;
+  const Component = React.Component;
 
-    const App = () => {
-        return (
-            <Canvas
-                width={200}
-                height={200}
-                draw={(canvas, ctx) => {
-                    ctx.strokeRect(0, 0, canvas.width, canvas.height);
-                }}
-            />
-        );
-    };
+  const App = () => {
+    return (
+      <Canvas
+        width={200}
+        height={200}
+        draw={(canvas, ctx) => {
+          ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
-    class Canvas extends Component {
-        componentDidMount() {
-            const ctx = this.canvas.getContext('2d');
-            this.props.draw(this.canvas, ctx);
-        }
-        render() {
-            const { width, height } = this.props;
+          const Val_max = 130;
+          const Val_min = -40;
+          const sections = 12;
 
-            return (
-                <canvas
-                    ref={node => (this.canvas = node)}
-                    width={width}
-                    height={height}
-                />
-            );
-        }
+          let xScale;
+          let yScale;
+          // Values for the Data Plot, they can also be obtained from a external file
+          let Apple = [100, 102, 87, , 100, 123, 100, 90, 87, 91, 93, 88];
+          let Samsung = [30, 50, 70, 80, 90, 100, 95, 91, 85, 92, 99, 130];
+          let Nokia = [20, -10, -20, -25, -40, 5, 10, 28, 30, 43, 65, 80];
+
+          init();
+
+          function init() {
+            // set these values for your data
+
+
+            let stepSize = 10;
+            let columnSize = 50;
+            let rowSize = 50;
+            let margin = 10;
+            let xAxis = [" ", "Jan", "Feb", "Mar", "Apr",
+              "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+
+            ctx.fillStyle = "#0099ff"
+            ctx.font = "20 pt Verdana"
+
+            yScale = (canvas.height - columnSize - margin) / (Val_max - Val_min);
+            xScale = (canvas.width - rowSize) / sections;
+
+            ctx.strokeStyle = "#009933"; // color of grid lines
+            ctx.beginPath();
+            // print Parameters on X axis, and grid lines on the graph
+            for (let i = 1; i <= sections; i++) {
+              let x = i * xScale;
+              ctx.fillText(xAxis[i], x, columnSize - margin);
+              ctx.moveTo(x, columnSize);
+              ctx.lineTo(x, canvas.height - margin);
+            }
+            // print row header and draw horizontal grid lines
+            let count = 0;
+            for (let scale = Val_max; scale >= Val_min; scale = scale - stepSize) {
+              let y = columnSize + (yScale * count * stepSize);
+              ctx.fillText(scale, margin, y + margin);
+              ctx.moveTo(rowSize, y)
+              ctx.lineTo(canvas.width, y)
+              count++;
+            }
+            ctx.stroke();
+
+            ctx.translate(rowSize, canvas.height + Val_min * yScale);
+            ctx.scale(1, -1 * yScale);
+
+            // Color of each dataplot items
+
+            ctx.strokeStyle = "#FF0066";
+            plotData(Apple);
+            ctx.strokeStyle = "#9933FF";
+            plotData(Samsung);
+            ctx.strokeStyle = "#000";
+            plotData(Nokia);
+          }
+
+          function plotData(dataSet) {
+            ctx.beginPath();
+            ctx.moveTo(0, dataSet[0]);
+            for (let i = 1; i < sections; i++) {
+              ctx.lineTo(i * xScale, dataSet[i]);
+            }
+            ctx.stroke();
+          }
+
+
+        }}
+      />
+    );
+  };
+
+  class Canvas extends Component {
+    componentDidMount() {
+      const ctx = this.canvas.getContext('2d');
+      this.props.draw(this.canvas, ctx);
     }
 
-    ReactDOM.render(<App />, document.getElementById('root'));
+    render() {
+      const {width, height} = this.props;
+
+      return (
+        <canvas
+          ref={node => (this.canvas = node)}
+          width={width}
+          height={height}
+        />
+      );
+    }
+  }
+
+  ReactDOM.render(<App/>, document.getElementById('root'));
 
 </script>
 </body>
