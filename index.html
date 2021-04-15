@@ -40,6 +40,7 @@
             ctx.fillStyle = "#0099ff"
             ctx.font = "20 pt Verdana"
             ctx.strokeStyle = "#009933"; // color of grid lines
+
             ctx.beginPath();
             // print Parameters on X axis, and grid lines on the graph
             for (let i = 1; i <= sections; i++) {
@@ -69,24 +70,25 @@
               {strokeStyle: '#9933FF', data: Samsung},
               {strokeStyle: '#000', data: Nokia},
             ]
-              .forEach(x => plotWithCtx(x.strokeStyle)(x.data))
+              .forEach(x => plotWithCtx(x.strokeStyle)(sections)(xScale)(x.data))
           }
 
-          function plotData(ctx) {
-            return strokeStyle => xs => {
-              ctx.strokeStyle = strokeStyle
-              ctx.beginPath();
-              ctx.moveTo(0, xs[0]);
-              for (let i = 1; i < sections; i++) {
-                ctx.lineTo(i * xScale, xs[i]);
-              }
-              ctx.stroke();
-            }
-          }
         }}
       />
     );
   };
+
+  function plotData(ctx) {
+    return strokeStyle => sections => xScale => xs => {
+      ctx.strokeStyle = strokeStyle
+      ctx.beginPath();
+      ctx.moveTo(0, xs[0]);
+      for (let i = 1; i < sections; i++) {
+        ctx.lineTo(i * xScale, xs[i]);
+      }
+      ctx.stroke();
+    }
+  }
 
   class Canvas extends Component {
     componentDidMount() {
