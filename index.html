@@ -62,10 +62,12 @@
             ctx.translate(rowSize, canvas.height + Val_min * yScale);
             ctx.scale(1, -1 * yScale);
 
-            // Color of each dataplot items
-            plotData(ctx, "#FF0066", Apple)
-            plotData(ctx, "#9933FF", Samsung);
-            plotData(ctx, "#000", Nokia);
+            [
+              {strokeStyle: '#FF0066', data: Apple},
+              {strokeStyle: '#9933FF', data: Samsung},
+              {strokeStyle: '#000', data: Nokia},
+            ]
+              .forEach(x => plotData(ctx, x.strokeStyle, x.data))
           }
 
           function plotData(ctx, strokeStyle, xs) {
