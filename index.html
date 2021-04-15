@@ -62,22 +62,26 @@
             ctx.translate(rowSize, canvas.height + Val_min * yScale);
             ctx.scale(1, -1 * yScale);
 
+
+            const plotWithCtx = plotData(ctx);
             [
               {strokeStyle: '#FF0066', data: Apple},
               {strokeStyle: '#9933FF', data: Samsung},
               {strokeStyle: '#000', data: Nokia},
             ]
-              .forEach(x => plotData(ctx, x.strokeStyle, x.data))
+              .forEach(x => plotWithCtx(x.strokeStyle)(x.data))
           }
 
-          function plotData(ctx, strokeStyle, xs) {
-            ctx.strokeStyle = strokeStyle
-            ctx.beginPath();
-            ctx.moveTo(0, xs[0]);
-            for (let i = 1; i < sections; i++) {
-              ctx.lineTo(i * xScale, xs[i]);
+          function plotData(ctx) {
+            return strokeStyle => xs => {
+              ctx.strokeStyle = strokeStyle
+              ctx.beginPath();
+              ctx.moveTo(0, xs[0]);
+              for (let i = 1; i < sections; i++) {
+                ctx.lineTo(i * xScale, xs[i]);
+              }
+              ctx.stroke();
             }
-            ctx.stroke();
           }
         }}
       />
