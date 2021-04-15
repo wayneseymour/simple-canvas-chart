@@ -6,11 +6,6 @@
 <script type='text/babel'>
   const Component = React.Component;
 
-  // Values for the Data Plot, they can also be obtained from a external file
-  let Apple = [100, 102, 87, , 100, 123, 100, 90, 87, 91, 93, 88];
-  let Samsung = [30, 50, 70, 80, 90, 100, 95, 91, 85, 92, 99, 130];
-  let Nokia = [20, -10, -20, -25, -40, 5, 10, 28, 30, 43, 65, 80];
-
   const App = () => {
     return (
       <Canvas
@@ -21,7 +16,8 @@
     );
   };
 
-  function draw (canvas, ctx) {
+
+  function draw(canvas, ctx) {
     ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
     // set these values for your data
@@ -32,8 +28,21 @@
     const columnSize = 50;
     const rowSize = 50;
     const margin = 10;
-    const xAxis = [' ', 'Jan', 'Feb', 'Mar', 'Apr',
-      'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    const xAxis = [
+      ' ',
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ];
 
     const yScale = (canvas.height - columnSize - margin) / (Val_max - Val_min);
     const xScale = (canvas.width - rowSize) / sections;
@@ -68,18 +77,17 @@
       ctx.translate(rowSize, canvas.height + Val_min * yScale);
       ctx.scale(1, -1 * yScale);
 
-
+      const {apple, samsung, nokia} = records();
       const plotWith = plotData(ctx)(sections)(xScale);
       [
-        {strokeStyle: '#FF0066', data: Apple},
-        {strokeStyle: '#9933FF', data: Samsung},
-        {strokeStyle: '#000', data: Nokia},
+        {strokeStyle: '#FF0066', data: apple},
+        {strokeStyle: '#9933FF', data: samsung},
+        {strokeStyle: '#000', data: nokia},
       ]
         .forEach(x => plotWith(x.strokeStyle)(x.data))
     }
 
   }
-
 
   function plotData(ctx) {
     return sections => xScale => strokeStyle => xs => {
@@ -92,6 +100,13 @@
       ctx.stroke();
     }
   }
+
+  const records = () =>
+    ({
+      apple: [100, 102, 87, , 100, 123, 100, 90, 87, 91, 93, 88],
+      samsung: [30, 50, 70, 80, 90, 100, 95, 91, 85, 92, 99, 130],
+      nokia: [20, -10, -20, -25, -40, 5, 10, 28, 30, 43, 65, 80],
+    });
 
   class Canvas extends Component {
     componentDidMount() {
