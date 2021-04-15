@@ -16,67 +16,70 @@
       <Canvas
         width={200}
         height={200}
-        draw={(canvas, ctx) => {
-          ctx.strokeRect(0, 0, canvas.width, canvas.height);
-
-          // set these values for your data
-          const Val_max = 130;
-          const Val_min = -40;
-          const sections = 12;
-          const stepSize = 10;
-          const columnSize = 50;
-          const rowSize = 50;
-          const margin = 10;
-          const xAxis = [' ', 'Jan', 'Feb', 'Mar', 'Apr',
-            'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-
-          const yScale = (canvas.height - columnSize - margin) / (Val_max - Val_min);
-          const xScale = (canvas.width - rowSize) / sections;
-
-
-          init(ctx);
-
-          function init(ctx) {
-            ctx.fillStyle = '#0099ff'
-            ctx.font = '20 pt Verdana'
-            ctx.strokeStyle = '#009933'; // color of grid lines
-
-            ctx.beginPath();
-            // print Parameters on X axis, and grid lines on the graph
-            for (let i = 1; i <= sections; i++) {
-              let x = i * xScale;
-              ctx.fillText(xAxis[i], x, columnSize - margin);
-              ctx.moveTo(x, columnSize);
-              ctx.lineTo(x, canvas.height - margin);
-            }
-            // print row header and draw horizontal grid lines
-            let count = 0;
-            for (let scale = Val_max; scale >= Val_min; scale = scale - stepSize) {
-              let y = columnSize + (yScale * count * stepSize);
-              ctx.fillText(scale, margin, y + margin);
-              ctx.moveTo(rowSize, y)
-              ctx.lineTo(canvas.width, y)
-              count++;
-            }
-            ctx.stroke();
-
-            ctx.translate(rowSize, canvas.height + Val_min * yScale);
-            ctx.scale(1, -1 * yScale);
-
-
-            const plotWith = plotData(ctx)(sections)(xScale);
-            [
-              {strokeStyle: '#FF0066', data: Apple},
-              {strokeStyle: '#9933FF', data: Samsung},
-              {strokeStyle: '#000', data: Nokia},
-            ]
-              .forEach(x => plotWith(x.strokeStyle)(x.data))
-          }
-
-        }}
+        draw={draw}
       />
     );
   };
+
+  function draw (canvas, ctx) {
+    ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+    // set these values for your data
+    const Val_max = 130;
+    const Val_min = -40;
+    const sections = 12;
+    const stepSize = 10;
+    const columnSize = 50;
+    const rowSize = 50;
+    const margin = 10;
+    const xAxis = [' ', 'Jan', 'Feb', 'Mar', 'Apr',
+      'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+    const yScale = (canvas.height - columnSize - margin) / (Val_max - Val_min);
+    const xScale = (canvas.width - rowSize) / sections;
+
+
+    init(ctx);
+
+    function init(ctx) {
+      ctx.fillStyle = '#0099ff'
+      ctx.font = '20 pt Verdana'
+      ctx.strokeStyle = '#009933'; // color of grid lines
+
+      ctx.beginPath();
+      // print Parameters on X axis, and grid lines on the graph
+      for (let i = 1; i <= sections; i++) {
+        let x = i * xScale;
+        ctx.fillText(xAxis[i], x, columnSize - margin);
+        ctx.moveTo(x, columnSize);
+        ctx.lineTo(x, canvas.height - margin);
+      }
+      // print row header and draw horizontal grid lines
+      let count = 0;
+      for (let scale = Val_max; scale >= Val_min; scale = scale - stepSize) {
+        let y = columnSize + (yScale * count * stepSize);
+        ctx.fillText(scale, margin, y + margin);
+        ctx.moveTo(rowSize, y)
+        ctx.lineTo(canvas.width, y)
+        count++;
+      }
+      ctx.stroke();
+
+      ctx.translate(rowSize, canvas.height + Val_min * yScale);
+      ctx.scale(1, -1 * yScale);
+
+
+      const plotWith = plotData(ctx)(sections)(xScale);
+      [
+        {strokeStyle: '#FF0066', data: Apple},
+        {strokeStyle: '#9933FF', data: Samsung},
+        {strokeStyle: '#000', data: Nokia},
+      ]
+        .forEach(x => plotWith(x.strokeStyle)(x.data))
+    }
+
+  }
+
 
   function plotData(ctx) {
     return sections => xScale => strokeStyle => xs => {
