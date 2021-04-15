@@ -64,13 +64,13 @@
             ctx.scale(1, -1 * yScale);
 
 
-            const plotWithCtx = plotData(ctx);
+            const plotWithCtx = plotData(ctx)(sections)(xScale);
             [
               {strokeStyle: '#FF0066', data: Apple},
               {strokeStyle: '#9933FF', data: Samsung},
               {strokeStyle: '#000', data: Nokia},
             ]
-              .forEach(x => plotWithCtx(x.strokeStyle)(sections)(xScale)(x.data))
+              .forEach(x => plotWithCtx(x.strokeStyle)(x.data))
           }
 
         }}
@@ -79,7 +79,7 @@
   };
 
   function plotData(ctx) {
-    return strokeStyle => sections => xScale => xs => {
+    return sections => xScale => strokeStyle => xs => {
       ctx.strokeStyle = strokeStyle
       ctx.beginPath();
       ctx.moveTo(0, xs[0]);
