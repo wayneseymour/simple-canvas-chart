@@ -21,8 +21,8 @@
     ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
     // set these values for your data
-    const Val_max = 130;
-    const Val_min = -40;
+    const max = 130;
+    const min = -40;
     const sections = 12;
     const stepSize = 10;
     const columnSize = 50;
@@ -44,7 +44,7 @@
       'Dec'
     ];
 
-    const yScale = (canvas.height - columnSize - margin) / (Val_max - Val_min);
+    const yScale = (canvas.height - columnSize - margin) / (max - min);
     const xScale = (canvas.width - rowSize) / sections;
 
 
@@ -65,7 +65,7 @@
       }
       // print row header and draw horizontal grid lines
       let count = 0;
-      for (let scale = Val_max; scale >= Val_min; scale = scale - stepSize) {
+      for (let scale = max; scale >= min; scale = scale - stepSize) {
         let y = columnSize + (yScale * count * stepSize);
         ctx.fillText(scale, margin, y + margin);
         ctx.moveTo(rowSize, y)
@@ -74,7 +74,7 @@
       }
       ctx.stroke();
 
-      ctx.translate(rowSize, canvas.height + Val_min * yScale);
+      ctx.translate(rowSize, canvas.height + min * yScale);
       ctx.scale(1, -1 * yScale);
 
       const {apple, samsung, nokia} = records();
