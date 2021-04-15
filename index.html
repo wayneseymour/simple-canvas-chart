@@ -1,9 +1,9 @@
 <body>
-<div id="root"></div>
-<script src="https://unpkg.com/react@16.0.0/umd/react.development.js"></script>
-<script src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.development.js"></script>
-<script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
-<script type="text/babel">
+<div id='root'></div>
+<script src='https://unpkg.com/react@16.0.0/umd/react.development.js'></script>
+<script src='https://unpkg.com/react-dom@16.0.0/umd/react-dom.development.js'></script>
+<script src='https://unpkg.com/babel-standalone@6.26.0/babel.js'></script>
+<script type='text/babel'>
   const Component = React.Component;
 
   // Values for the Data Plot, they can also be obtained from a external file
@@ -27,8 +27,8 @@
           const columnSize = 50;
           const rowSize = 50;
           const margin = 10;
-          const xAxis = [" ", "Jan", "Feb", "Mar", "Apr",
-            "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+          const xAxis = [' ', 'Jan', 'Feb', 'Mar', 'Apr',
+            'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
           const yScale = (canvas.height - columnSize - margin) / (Val_max - Val_min);
           const xScale = (canvas.width - rowSize) / sections;
@@ -37,9 +37,9 @@
           init(ctx);
 
           function init(ctx) {
-            ctx.fillStyle = "#0099ff"
-            ctx.font = "20 pt Verdana"
-            ctx.strokeStyle = "#009933"; // color of grid lines
+            ctx.fillStyle = '#0099ff'
+            ctx.font = '20 pt Verdana'
+            ctx.strokeStyle = '#009933'; // color of grid lines
 
             ctx.beginPath();
             // print Parameters on X axis, and grid lines on the graph
@@ -64,13 +64,13 @@
             ctx.scale(1, -1 * yScale);
 
 
-            const plotWithCtx = plotData(ctx)(sections)(xScale);
+            const plotWith = plotData(ctx)(sections)(xScale);
             [
               {strokeStyle: '#FF0066', data: Apple},
               {strokeStyle: '#9933FF', data: Samsung},
               {strokeStyle: '#000', data: Nokia},
             ]
-              .forEach(x => plotWithCtx(x.strokeStyle)(x.data))
+              .forEach(x => plotWith(x.strokeStyle)(x.data))
           }
 
         }}
